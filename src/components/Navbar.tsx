@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { LogOut, History, User, Cpu, ScanSearch, Dna } from "lucide-react";
 
 export function Navbar() {
@@ -47,6 +48,7 @@ export function Navbar() {
               <span className="hidden sm:inline">Profile</span>
             </Button>
           </Link>
+          <ThemeToggle />
           <Button
             variant="ghost"
             size="sm"
