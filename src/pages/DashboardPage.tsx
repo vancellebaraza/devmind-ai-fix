@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Zap, Copy, Share2, CheckCheck } from "lucide-react";
+import { Zap, Copy, Share2, CheckCheck, AlertTriangle } from "lucide-react";
 
 const LANGUAGES = [
   "JavaScript", "TypeScript", "Python", "React",
@@ -21,9 +21,11 @@ const LANGUAGES = [
 ];
 
 interface FixResult {
+  root_cause: string;
   explanation: string;
   fixed_code: string;
   summary: string;
+  related_risks: string[];
   sessionId?: string;
 }
 
@@ -106,7 +108,7 @@ export default function DashboardPage() {
         sessionId = data?.id;
       }
 
-      setResult({ ...fix, sessionId });
+      setResult({ ...fix, related_risks: fix.related_risks ?? [], sessionId });
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Something went wrong";
       toast({ title: "Analysis failed", description: message, variant: "destructive" });
@@ -221,17 +223,39 @@ export default function DashboardPage() {
         {result && !loading && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 animate-fade-in">
             {/* Left: Explanation */}
-            <div className="rounded-xl border border-border bg-card p-6 shadow-card">
-              <h2 className="text-base font-semibold text-foreground mb-4 flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-destructive/10 text-destructive text-xs">!</span>
-                What went wrong
-              </h2>
-              <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{result.explanation}</p>
-              <div className="mt-4 pt-4 border-t border-border">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-card flex flex-col gap-4">
+              <div>
+                <h2 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-md bg-destructive/10 text-destructive text-xs">!</span>
+                  What went wrong
+                </h2>
+                {result.root_cause && (
+                  <div className="mb-3 rounded-lg bg-destructive/5 border border-destructive/20 px-4 py-2.5">
+                    <span className="text-xs font-semibold text-destructive uppercase tracking-wider block mb-1">Root Cause</span>
+                    <p className="text-sm font-semibold text-foreground">{result.root_cause}</p>
+                  </div>
+                )}
+                <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{result.explanation}</p>
+              </div>
+              <div className="pt-3 border-t border-border">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                   {result.summary}
                 </span>
               </div>
+              {result.related_risks && result.related_risks.length > 0 && (
+                <div className="pt-3 border-t border-border">
+                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                    <AlertTriangle className="h-3.5 w-3.5" /> Watch Out For
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {result.related_risks.map((risk, i) => (
+                      <span key={i} className="inline-flex items-center rounded-md border border-yellow-300 bg-yellow-50 text-yellow-800 px-2.5 py-1 text-xs leading-snug">
+                        {risk}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Right: Fixed Code */}

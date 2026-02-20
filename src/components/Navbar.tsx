@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
-import { LogOut, History, User, Cpu } from "lucide-react";
+import { LogOut, History, User, Cpu, ScanSearch, Dna } from "lucide-react";
 
 export function Navbar() {
   const { signOut } = useAuth();
@@ -22,7 +22,19 @@ export function Navbar() {
           <span className="text-foreground font-bold">DevMind AI</span>
         </Link>
 
-        <nav className="flex items-center gap-2">
+        <nav className="flex items-center gap-1">
+          <Link to="/scan">
+            <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+              <ScanSearch className="h-4 w-4" />
+              <span className="hidden sm:inline">Scan File</span>
+            </Button>
+          </Link>
+          <Link to="/dna">
+            <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+              <Dna className="h-4 w-4" />
+              <span className="hidden sm:inline">Debug DNA</span>
+            </Button>
+          </Link>
           <Link to="/history">
             <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
               <History className="h-4 w-4" />
@@ -49,3 +61,4 @@ export function Navbar() {
     </header>
   );
 }
+
