@@ -14,7 +14,109 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      insights: {
+        Row: {
+          generated_at: string
+          id: string
+          insight_text: string
+          related_session_ids: string[] | null
+          user_id: string
+        }
+        Insert: {
+          generated_at?: string
+          id?: string
+          insight_text: string
+          related_session_ids?: string[] | null
+          user_id: string
+        }
+        Update: {
+          generated_at?: string
+          id?: string
+          insight_text?: string
+          related_session_ids?: string[] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insights_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          stack_context: string[] | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id: string
+          stack_context?: string[] | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          stack_context?: string[] | null
+        }
+        Relationships: []
+      }
+      sessions: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          explanation: string
+          fixed_code: string
+          id: string
+          input_code: string
+          is_public: boolean
+          language: string
+          mode: string
+          summary: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          explanation?: string
+          fixed_code?: string
+          id?: string
+          input_code?: string
+          is_public?: boolean
+          language?: string
+          mode?: string
+          summary?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          explanation?: string
+          fixed_code?: string
+          id?: string
+          input_code?: string
+          is_public?: boolean
+          language?: string
+          mode?: string
+          summary?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
