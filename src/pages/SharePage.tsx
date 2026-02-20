@@ -3,7 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import { supabase, type Session } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Cpu, ArrowRight, Copy, CheckCheck, Code2, AlertTriangle, Calendar } from "lucide-react";
+import { CodeDiffViewer } from "@/components/CodeDiffViewer";
+import { Cpu, ArrowRight, Copy, CheckCheck, Code2, AlertTriangle, Calendar, GitCompare, Code } from "lucide-react";
 
 export default function SharePage() {
   const { id } = useParams<{ id: string }>();
@@ -11,6 +12,7 @@ export default function SharePage() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [codeView, setCodeView] = useState<"split" | "diff">("split");
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -94,37 +96,81 @@ export default function SharePage() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Original Code */}
-          <div className="rounded-xl border border-border bg-card shadow-card overflow-hidden">
-            <div className="px-5 py-3 border-b border-border">
-              <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <span className="flex h-5 w-5 items-center justify-center rounded bg-destructive/10 text-destructive text-xs">!</span>
-                Original broken code
-              </h2>
+        {/* View toggle */}
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center rounded-md border border-border overflow-hidden">
+            <button
+              onClick={() => setCodeView("split")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${
+                codeView === "split"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-background text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Code className="h-3.5 w-3.5" /> Side by Side
+            </button>
+            <button
+              onClick={() => setCodeView("diff")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors ${
+                codeView === "diff"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-background text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <GitCompare className="h-3.5 w-3.5" /> Diff View
+            </button>
+          </div>
+        </div>
+
+        {codeView === "split" ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Original Code */}
+            <div className="rounded-xl border border-border bg-card shadow-card overflow-hidden">
+              <div className="px-5 py-3 border-b border-border">
+                <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <span className="flex h-5 w-5 items-center justify-center rounded bg-destructive/10 text-destructive text-xs">!</span>
+                  Original broken code
+                </h2>
+              </div>
+              <div className="code-block rounded-none border-0 text-sm max-h-64 overflow-auto">
+                {session.input_code}
+              </div>
             </div>
-            <div className="code-block rounded-none border-0 text-sm max-h-64 overflow-auto">
-              {session.input_code}
+
+            {/* Fixed Code */}
+            <div className="rounded-xl border border-border bg-card shadow-card overflow-hidden">
+              <div className="flex items-center justify-between px-5 py-3 border-b border-border">
+                <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <span className="flex h-5 w-5 items-center justify-center rounded bg-green-500/10 text-green-600 text-xs">✓</span>
+                  Fixed Code
+                </h2>
+                <Button size="sm" variant="outline" onClick={copyFix} className="h-7 gap-1 text-xs">
+                  {copied ? <CheckCheck className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
+                  {copied ? "Copied!" : "Copy"}
+                </Button>
+              </div>
+              <div className="code-block rounded-none border-0 text-sm max-h-64 overflow-auto">
+                {session.fixed_code}
+              </div>
             </div>
           </div>
-
-          {/* Fixed Code */}
+        ) : (
           <div className="rounded-xl border border-border bg-card shadow-card overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3 border-b border-border">
               <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <span className="flex h-5 w-5 items-center justify-center rounded bg-green-500/10 text-green-600 text-xs">✓</span>
-                Fixed Code
+                <GitCompare className="h-4 w-4 text-primary" />
+                Diff View
               </h2>
               <Button size="sm" variant="outline" onClick={copyFix} className="h-7 gap-1 text-xs">
                 {copied ? <CheckCheck className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
-                {copied ? "Copied!" : "Copy"}
+                {copied ? "Copied!" : "Copy Fixed"}
               </Button>
             </div>
-            <div className="code-block rounded-none border-0 text-sm max-h-64 overflow-auto">
-              {session.fixed_code}
+            <div className="p-1">
+              <CodeDiffViewer oldCode={session.input_code} newCode={session.fixed_code} />
             </div>
           </div>
-        </div>
+        )}
 
         {/* Explanation */}
         <div className="mt-6 rounded-xl border border-border bg-card p-6 shadow-card">
