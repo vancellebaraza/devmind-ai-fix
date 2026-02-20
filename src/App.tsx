@@ -12,6 +12,8 @@ import DashboardPage from "./pages/DashboardPage";
 import HistoryPage from "./pages/HistoryPage";
 import SharePage from "./pages/SharePage";
 import ProfilePage from "./pages/ProfilePage";
+import ScanPage from "./pages/ScanPage";
+import DnaPage from "./pages/DnaPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +39,8 @@ const App = () => (
             <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
             <Route path="/history" element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+            <Route path="/scan" element={<ProtectedRoute><ScanPage /></ProtectedRoute>} />
+            <Route path="/dna" element={<ProtectedRoute><DnaPage /></ProtectedRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
@@ -47,3 +51,4 @@ const App = () => (
 );
 
 export default App;
+

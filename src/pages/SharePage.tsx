@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase, type Session } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Cpu, ArrowRight, Copy, CheckCheck, Code2 } from "lucide-react";
+import { Cpu, ArrowRight, Copy, CheckCheck, Code2, AlertTriangle, Calendar } from "lucide-react";
 
 export default function SharePage() {
   const { id } = useParams<{ id: string }>();
@@ -136,6 +136,50 @@ export default function SharePage() {
             </span>
           </div>
         </div>
+
+        {/* Session Metadata */}
+        <div className="mt-4 flex flex-wrap items-center gap-3 px-1">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Code2 className="h-3.5 w-3.5" />
+            <span className="font-medium text-foreground">{session.language}</span>
+          </div>
+          <span className="text-border">·</span>
+          <Badge
+            variant="outline"
+            className={`text-xs ${session.mode === "eli5" ? "border-yellow-300 text-yellow-700 bg-yellow-50" : "border-blue-300 text-blue-700 bg-blue-50"}`}
+          >
+            {session.mode.toUpperCase()} mode
+          </Badge>
+          <span className="text-border">·</span>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Calendar className="h-3.5 w-3.5" />
+            Fixed on {new Date(session.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+          </div>
+        </div>
+
+        {/* Related Risks */}
+        {(() => {
+          let risks: string[] = [];
+          try {
+            const raw = (session as unknown as Record<string, unknown>).related_risks;
+            if (Array.isArray(raw)) risks = raw as string[];
+          } catch {}
+          return risks.length > 0 ? (
+            <div className="mt-4 rounded-xl border border-border bg-card p-5 shadow-card">
+              <h2 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
+                <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                Watch Out For
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {risks.map((risk: string, i: number) => (
+                  <span key={i} className="inline-flex items-center rounded-md border border-yellow-300 bg-yellow-50 text-yellow-800 px-2.5 py-1 text-xs leading-snug">
+                    {risk}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : null;
+        })()}
 
         {/* CTA */}
         <div className="mt-8 rounded-2xl bg-primary p-8 text-center text-primary-foreground">
