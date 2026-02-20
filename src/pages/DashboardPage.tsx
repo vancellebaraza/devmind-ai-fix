@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { fixCode } from "@/lib/gemini";
 import { Navbar } from "@/components/Navbar";
+import { CodeDiffViewer } from "@/components/CodeDiffViewer";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -13,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Zap, Copy, Share2, CheckCheck, AlertTriangle } from "lucide-react";
+import { Zap, Copy, Share2, CheckCheck, AlertTriangle, GitCompare, Code } from "lucide-react";
 
 const LANGUAGES = [
   "JavaScript", "TypeScript", "Python", "React",
@@ -62,6 +63,7 @@ export default function DashboardPage() {
   const [stackContext, setStackContext] = useState<string[]>([]);
   const [copied, setCopied] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+  const [codeView, setCodeView] = useState<"fixed" | "diff">("fixed");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -266,6 +268,29 @@ export default function DashboardPage() {
                   Fixed Code
                 </h2>
                 <div className="flex items-center gap-2">
+                  {/* View toggle */}
+                  <div className="flex items-center rounded-md border border-border overflow-hidden">
+                    <button
+                      onClick={() => setCodeView("fixed")}
+                      className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium transition-colors ${
+                        codeView === "fixed"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-background text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      <Code className="h-3 w-3" /> Code
+                    </button>
+                    <button
+                      onClick={() => setCodeView("diff")}
+                      className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium transition-colors ${
+                        codeView === "diff"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-background text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      <GitCompare className="h-3 w-3" /> Diff
+                    </button>
+                  </div>
                   {result.sessionId && (
                     <Button
                       size="sm"
@@ -277,20 +302,28 @@ export default function DashboardPage() {
                       {linkCopied ? "Copied!" : "Share Fix"}
                     </Button>
                   )}
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={copyFix}
-                    className="h-8 gap-1.5 text-xs"
-                  >
-                    {copied ? <CheckCheck className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
-                    {copied ? "Copied!" : "Copy Fix"}
-                  </Button>
+                  {codeView === "fixed" && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={copyFix}
+                      className="h-8 gap-1.5 text-xs"
+                    >
+                      {copied ? <CheckCheck className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
+                      {copied ? "Copied!" : "Copy Fix"}
+                    </Button>
+                  )}
                 </div>
               </div>
-              <div className="code-block rounded-none border-0 text-sm max-h-80 overflow-auto">
-                {result.fixed_code}
-              </div>
+              {codeView === "fixed" ? (
+                <div className="code-block rounded-none border-0 text-sm max-h-80 overflow-auto">
+                  {result.fixed_code}
+                </div>
+              ) : (
+                <div className="p-1">
+                  <CodeDiffViewer oldCode={inputCode} newCode={result.fixed_code} />
+                </div>
+              )}
             </div>
           </div>
         )}
