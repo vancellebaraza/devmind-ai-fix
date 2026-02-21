@@ -1,73 +1,142 @@
-# Welcome to your Lovable project
+🧠 DevMind AI
+Fix faster. Learn forever.
+DevMind AI is a context-aware debugging assistant that doesn't just fix your code — it makes you a better developer over time. Paste broken code, get the root cause, the exact fix, and a clear explanation tailored to your stack and experience level.
 
-## Project info
+✨ Features
+⚡ Instant Code Fix & Root Cause Analysis
+Paste broken code or an error message. DevMind identifies the root cause, returns the exact fixed code, and explains what went wrong — tailored to your specific tech stack. No generic advice. No guessing.
+🔍 Whole File Scanner
+Paste an entire file and DevMind scans every function, flagging:
+🔴 Critical bugs — things that will break your app
+🟡 Warnings — anti-patterns and risky code
+🔵 Suggestions — performance improvements and best practices
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+🎚️ ELI5 / Expert Toggle
+One toggle. Two audiences.
+Expert mode — concise, technical, no hand-holding
+ELI5 mode — plain English with analogies, perfect for beginners
 
-## How can I edit this code?
+🔗 Share Your Fix
+Every fix session gets a unique public URL. One click copies it to your clipboard. No login required to view — share solutions with your team or on social media instantly.
 
-There are several ways of editing your application.
+🧬 Debug DNA — Your Personal Error Fingerprint
+This is what makes DevMind different from every other tool.
+After 3+ sessions, DevMind builds your Debug DNA — a living profile of your coding patterns:
 
-**Use Lovable**
+📊 Your top recurring mistake patterns with actionable tips
+🗂️ Language breakdown showing where you struggle most
+📈 14-day activity timeline tracking your debugging frequency
+🔥 Streak tracker for consecutive days of active debugging
+The goal: the more you use DevMind, the less you need it.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+🛠️ Tech Stack
+Layer
+Technology
+Frontend
+React + Tailwind CSS
+AI Engine
+Gemini 2.0 Flash API
+Auth & Database
+Supabase + PostgreSQL
+Sharing
+UUID-based public sessions
 
-Changes made via Lovable will be committed automatically to this repo.
+🚀 Getting Started
+Prerequisites
+Node.js 18+
+A Supabase project
+A Gemini API key from Google AI Studio
+Installation
 
-**Use your preferred IDE**
+# Clone the repository
+git clone https://github.com/vancellebaraza/devmind-ai-fix.git
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+# Navigate into the project
+cd devmind-ai
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+# Install dependencies
+npm install
+Environment Variables
+Create a .env file in the root directory:
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_GEMINI_API_KEY=your_gemini_api_key
+Database Setup
+Run the following SQL in your Supabase SQL editor:
+-- Profiles table
+create table profiles (
+  id uuid references auth.users on delete cascade primary key,
+  email text,
+  stack_context text[] default '{}',
+  created_at timestamp with time zone default timezone('utc', now())
+);
 
-Follow these steps:
+-- Sessions table
+create table sessions (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references profiles(id) on delete cascade,
+  input_code text,
+  fixed_code text,
+  explanation text,
+  root_cause text,
+  summary text,
+  related_risks text[],
+  mode text default 'expert',
+  language text,
+  is_public boolean default true,
+  created_at timestamp with time zone default timezone('utc', now())
+);
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+-- Insights table
+create table insights (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references profiles(id) on delete cascade,
+  insight_text text,
+  related_session_ids uuid[],
+  generated_at timestamp with time zone default timezone('utc', now())
+);
+Run the App
 npm run dev
-```
+Visit http://localhost:5173 and start fixing code.
 
-**Edit a file directly in GitHub**
+📱 Screens
+Route
+Description
+/
+Homepage with feature overview
+/signup
+Create an account
+/login
+Sign in
+/setup
+Pick your tech stack
+/dashboard
+Main fix interface
+/scan
+Whole file scanner
+/history
+Past sessions + pattern insights
+/dna
+Your Debug DNA profile
+/share/:id
+Public fix view — no login needed
+/profile
+Update your stack
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+🏆 Built For
+TechThrive March 2026 Hackathon
+Category: AI / Developer Tools
+Prize Pool: ₹16,000
+Participants: 289
+🔮 What's Next
+VS Code and JetBrains plugins
+GitHub PR scanning and auto-review
+Team-wide Debug DNA and shared pattern insights
+Multi-file codebase health reports
+Expanded framework-specific insights for Flutter, Swift, Kotlin, and Go
+📄 License
+MIT License. See LICENSE for details.
+�
+DevMind AI · Built with React, Gemini & Supabase
+Not just a fix. A lesson. 
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
