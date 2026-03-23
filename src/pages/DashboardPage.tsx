@@ -206,7 +206,7 @@ export default function DashboardPage() {
             <Button
               onClick={handleAnalyze}
               disabled={loading}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary gap-2 px-6"
+              className="bg-accent text-accent-foreground hover:bg-accent/90 gap-2 px-6"
             >
               {loading ? (
                 <span className="h-4 w-4 rounded-full border-2 border-primary-foreground border-t-transparent animate-spin" />

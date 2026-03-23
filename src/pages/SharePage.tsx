@@ -228,7 +228,7 @@ export default function SharePage() {
         })()}
 
         {/* CTA */}
-        <div className="mt-8 rounded-2xl bg-primary p-8 text-center text-primary-foreground">
+        <div className="mt-8 rounded-2xl bg-primary p-8 text-center text-primary-foreground shadow-card">
           <Cpu className="mx-auto h-8 w-8 mb-3 opacity-90" />
           <h3 className="text-xl font-bold mb-2">Fix your own broken code</h3>
           <p className="text-primary-foreground/80 text-sm mb-4">
