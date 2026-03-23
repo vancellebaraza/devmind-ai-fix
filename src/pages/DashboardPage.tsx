@@ -143,7 +143,7 @@ export default function DashboardPage() {
 
       <main className="container py-8 max-w-5xl">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground">Analyze & Fix</h1>
+          <h1 className="font-heading text-2xl font-bold text-foreground">Analyze & Fix</h1>
           <p className="text-muted-foreground mt-1">Paste your broken code or error message below.</p>
         </div>
 
