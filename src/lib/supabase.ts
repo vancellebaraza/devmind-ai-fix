@@ -1,5 +1,16 @@
-// Re-export the Lovable Cloud Supabase client
-export { supabase } from "@/integrations/supabase/client";
+import { createClient } from '@supabase/supabase-js';
+import type { Database } from '@/integrations/supabase/types';
+
+const SUPABASE_URL = 'https://iwqtdcellgoanzrifspn.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3cXRkY2VsbGdvYW56cmlmc3BuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NjAwODQsImV4cCI6MjA4NzEzNjA4NH0.Vog_ctYmdQ9cmiqVS2gSJKdVq5J9s9UmqRfa8Q6Xojo';
+
+export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    storage: localStorage,
+    persistSession: true,
+    autoRefreshToken: true,
+  }
+});
 
 export type Profile = {
   id: string;
