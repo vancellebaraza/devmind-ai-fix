@@ -6,7 +6,7 @@ const features = [
   {
     icon: Zap,
     title: "Instant Code Fix",
-    description: "Paste your broken code and get a working fix in seconds, powered by Gemini AI.",
+    description: "Paste your broken code and get a working fix in seconds, powered by AI.",
   },
   {
     icon: Brain,
@@ -31,18 +31,18 @@ export default function Index() {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
         <div className="container flex h-14 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
               <Cpu className="h-4 w-4 text-primary-foreground" />
             </div>
-            <span className="font-bold text-foreground">DevMind AI</span>
+            <span className="font-heading font-bold text-foreground text-lg">DevMind AI</span>
           </div>
           <div className="flex items-center gap-2">
             <Link to="/login">
               <Button variant="ghost" size="sm">Sign in</Button>
             </Link>
             <Link to="/signup">
-              <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button size="sm">
                 Get Started
               </Button>
             </Link>
@@ -51,30 +51,17 @@ export default function Index() {
       </header>
 
       {/* Hero */}
-      <section className="relative overflow-hidden py-24 sm:py-32">
-        {/* Grid background */}
-        <div
-          className="absolute inset-0 opacity-40"
-          style={{
-            backgroundImage: "radial-gradient(hsl(var(--border)) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-        {/* Gradient blobs */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
-
+      <section className="relative py-24 sm:py-32">
         <div className="container relative text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary font-medium mb-6 animate-fade-in">
-            <Zap className="h-3.5 w-3.5" />
-            Powered by Gemini 2.0 Flash
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted-foreground font-medium mb-8 animate-fade-in shadow-card">
+            <Zap className="h-3.5 w-3.5 text-accent" />
+            AI-Powered Code Debugging
           </div>
 
-          <h1 className="mx-auto max-w-3xl text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-foreground animate-fade-in">
-            Your{" "}
-            <span className="gradient-text">AI-Powered</span>
+          <h1 className="mx-auto max-w-3xl font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground animate-fade-in leading-tight">
+            Your AI-Powered
             <br />
-            Developer Sidekick
+            <span className="text-primary">Developer Sidekick</span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground leading-relaxed animate-fade-in">
@@ -82,9 +69,9 @@ export default function Index() {
             with clear explanations — tailored to your exact tech stack.
           </p>
 
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 animate-fade-in">
             <Link to="/signup">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary gap-2 px-8">
+              <Button size="lg" className="gap-2 px-8">
                 Get Started Free
                 <ArrowRight className="h-4 w-4" />
               </Button>
@@ -97,12 +84,12 @@ export default function Index() {
           </div>
 
           {/* Demo snippet */}
-          <div className="mt-16 mx-auto max-w-2xl rounded-xl overflow-hidden border border-code-border shadow-xl animate-fade-in">
+          <div className="mt-16 mx-auto max-w-2xl rounded-xl overflow-hidden border border-code-border shadow-card animate-fade-in">
             <div className="flex items-center gap-2 bg-code-bg px-4 py-3 border-b border-code-border">
-              <div className="h-3 w-3 rounded-full bg-red-500/70" />
-              <div className="h-3 w-3 rounded-full bg-yellow-500/70" />
-              <div className="h-3 w-3 rounded-full bg-green-500/70" />
-              <div className="ml-2 flex items-center gap-1.5 text-xs text-code-fg/50">
+              <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/30" />
+              <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/30" />
+              <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/30" />
+              <div className="ml-2 flex items-center gap-1.5 text-xs text-code-fg/40">
                 <Terminal className="h-3 w-3" />
                 error.js
               </div>
@@ -110,14 +97,14 @@ export default function Index() {
             <div className="code-block rounded-none border-0 text-left text-sm">
               <span className="text-red-400">TypeError: Cannot read properties of undefined</span>
               {"\n"}
-              <span className="text-code-fg/60">    at getUserData </span>
-              <span className="text-yellow-400">(app.js:42)</span>
+              <span className="text-code-fg/50">    at getUserData </span>
+              <span className="text-yellow-500/80">(app.js:42)</span>
               {"\n\n"}
-              <span className="text-green-400">// ✓ DevMind AI Fix:</span>
+              <span className="text-emerald-400">// ✓ DevMind AI Fix:</span>
               {"\n"}
               <span className="text-blue-400">const</span>
               {" userData = user"}
-              <span className="text-yellow-400">?.</span>
+              <span className="text-yellow-500/80">?.</span>
               {"data "}
               <span className="text-blue-400">??</span>
               {" null;"}
@@ -127,10 +114,10 @@ export default function Index() {
       </section>
 
       {/* Features */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-20 border-t border-border">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground">Everything you need to debug faster</h2>
+          <div className="text-center mb-14">
+            <h2 className="font-heading text-3xl font-bold text-foreground">Everything you need to debug faster</h2>
             <p className="mt-3 text-muted-foreground">Stop Googling. Start fixing.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -139,10 +126,10 @@ export default function Index() {
                 key={feature.title}
                 className="card-hover rounded-xl border border-border bg-card p-6 shadow-card"
               >
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <feature.icon className="h-5 w-5 text-primary" />
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10">
+                  <feature.icon className="h-5 w-5 text-accent" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
+                <h3 className="font-heading font-semibold text-foreground mb-2">{feature.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
               </div>
             ))}
@@ -151,11 +138,11 @@ export default function Index() {
       </section>
 
       {/* CTA */}
-      <section className="py-20">
+      <section className="py-20 border-t border-border">
         <div className="container text-center">
-          <div className="mx-auto max-w-xl rounded-2xl bg-primary p-10 text-primary-foreground shadow-primary">
-            <Code2 className="mx-auto h-10 w-10 mb-4 opacity-90" />
-            <h2 className="text-3xl font-bold mb-3">Ready to fix your code?</h2>
+          <div className="mx-auto max-w-xl rounded-2xl bg-primary p-10 text-primary-foreground">
+            <Code2 className="mx-auto h-10 w-10 mb-4 opacity-80" />
+            <h2 className="font-heading text-3xl font-bold mb-3">Ready to fix your code?</h2>
             <p className="opacity-80 mb-6">Join developers who debug smarter with AI.</p>
             <Link to="/signup">
               <Button size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold">

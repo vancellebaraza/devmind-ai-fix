@@ -143,7 +143,7 @@ export default function DashboardPage() {
 
       <main className="container py-8 max-w-5xl">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-foreground">Analyze & Fix</h1>
+          <h1 className="font-heading text-2xl font-bold text-foreground">Analyze & Fix</h1>
           <p className="text-muted-foreground mt-1">Paste your broken code or error message below.</p>
         </div>
 
@@ -206,7 +206,7 @@ export default function DashboardPage() {
             <Button
               onClick={handleAnalyze}
               disabled={loading}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary gap-2 px-6"
+              className="bg-accent text-accent-foreground hover:bg-accent/90 gap-2 px-6"
             >
               {loading ? (
                 <span className="h-4 w-4 rounded-full border-2 border-primary-foreground border-t-transparent animate-spin" />
